@@ -514,6 +514,818 @@ const files = [
         size: "Unknown",
 
         url:
+        "https://latest.tamilupdates.workers.dev/kpsbots-u1g7erixn3wi84925"
+    },
+    {
+        name: "Yesudas",
+        type: "Video",
+        extension: "MP4",
+        size: "Unknown",
+
+        url:
+        "https://latest.tamilupdates.workers.dev/kpsbots-79fwctbalw84923"
+    },
+
+    {
+        name: "love Songs",
+        type: "Video",
+        extension: "MP4",
+        size: "Unknown",
+
+        url:
+        "https://latest.tamilupdates.workers.dev/kpsbots-u1g7erixn3wi84925"
+    },
+
+        {
+        name: "Illayaraja hits",
+        type: "Video",
+        extension: "MP4",
+        size: "Unknown",
+
+        url:
+        "https://latest.tamilupdates.workers.dev/kpsbots-621ml2w6ytiaw84921"
+    }
+    
+
+];
+
+
+/* ==================================================
+   ICON DATABASE
+================================================== */
+
+function getIcon(extension) {
+
+    const ext =
+        extension
+        .toLowerCase()
+        .replace(".", "");
+
+    const icons = {
+
+        /* Video */
+        mp4: "🎬",
+        mkv: "🎬",
+        avi: "🎬",
+        mov: "🎬",
+        webm: "🎬",
+        m4v: "🎬",
+
+        /* Audio */
+        mp3: "🎵",
+        wav: "🎵",
+        flac: "🎵",
+        m4a: "🎵",
+        aac: "🎵",
+        ogg: "🎵",
+
+        /* Application */
+        apk: "📱",
+        exe: "💻",
+        dmg: "💻",
+
+        /* Archive */
+        zip: "📦",
+        rar: "📦",
+        "7z": "📦",
+        tar: "📦",
+        gz: "📦",
+
+        /* Documents */
+        pdf: "📕",
+        doc: "📄",
+        docx: "📄",
+        txt: "📄",
+        rtf: "📄",
+
+        /* Spreadsheet */
+        xls: "📊",
+        xlsx: "📊",
+        csv: "📊",
+
+        /* Presentation */
+        ppt: "📊",
+        pptx: "📊",
+
+        /* Images */
+        jpg: "🖼️",
+        jpeg: "🖼️",
+        png: "🖼️",
+        gif: "🖼️",
+        webp: "🖼️",
+        svg: "🖼️",
+
+        /* Disk */
+        iso: "💿"
+
+    };
+
+    return icons[ext] || "📁";
+}
+
+
+/* ==================================================
+   ESCAPE HTML
+
+   Prevents file names from injecting HTML.
+================================================== */
+
+function escapeHTML(value) {
+
+    return String(value)
+
+        .replace(/&/g, "&amp;")
+
+        .replace(/</g, "&lt;")
+
+        .replace(/>/g, "&gt;")
+
+        .replace(/"/g, "&quot;")
+
+        .replace(/'/g, "&#039;");
+}
+
+
+/* ==================================================
+   CREATE FILE CARD
+================================================== */
+
+function createCard(file) {
+
+    const card =
+        document.createElement("div");
+
+    card.className =
+        "file-card";
+
+
+    const icon =
+        getIcon(file.extension);
+
+
+    card.innerHTML = `
+
+        <div class="card-top">
+
+            <div class="file-icon">
+                ${icon}
+            </div>
+
+
+            <div class="file-info">
+
+                <div class="file-name">
+                    ${escapeHTML(file.name)}
+                </div>
+
+
+                <div class="file-meta">
+
+                    <span class="badge">
+                        ${escapeHTML(file.type)}
+                    </span>
+
+                    <span class="badge">
+                        ${escapeHTML(file.extension)}
+                    </span>
+
+                    <span class="badge">
+                        ${escapeHTML(file.size)}
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="actions">
+
+            <a
+                class="btn"
+                href="${file.url}"
+                target="_blank"
+                rel="noopener noreferrer">
+
+                ↗ Open
+
+            </a>
+
+
+            <a
+                class="btn download-btn"
+                href="${file.url}"
+                download>
+
+                ↓ Download
+
+            </a>
+
+        </div>
+
+    `;
+
+
+    return card;
+}
+
+
+/* ==================================================
+   DISPLAY FILES
+================================================== */
+
+const fileList =
+    document.getElementById("fileList");
+
+const empty =
+    document.getElementById("empty");
+
+const fileCount =
+    document.getElementById("fileCount");
+
+
+function displayFiles(list) {
+
+    fileList.innerHTML = "";
+
+
+    /* File count */
+
+    fileCount.textContent =
+        list.length +
+        (list.length === 1
+            ? " file"
+            : " files");
+
+
+    /* Empty state */
+
+    if (list.length === 0) {
+
+        empty.style.display =
+            "block";
+
+        return;
+    }
+
+
+    empty.style.display =
+        "none";
+
+
+    /* Create cards */
+
+    list.forEach(file => {
+
+        const card =
+            createCard(file);
+
+        fileList.appendChild(card);
+
+    });
+}
+
+
+/* ==================================================
+   SEARCH
+================================================== */
+
+const search =
+    document.getElementById("search");
+
+
+search.addEventListener(
+    "input",
+    function () {
+
+        const query =
+            this.value
+            .toLowerCase()
+            .trim();
+
+
+        const filtered =
+            files.filter(file => {
+
+                return (
+
+                    file.name
+                    .toLowerCase()
+                    .includes(query)
+
+                    ||
+
+                    file.type
+                    .toLowerCase()
+                    .includes(query)
+
+                    ||
+
+                    file.extension
+                    .toLowerCase()
+                    .includes(query)
+
+                );
+
+            });
+
+
+        displayFiles(filtered);
+
+    }
+);
+
+
+/* ==================================================
+   INITIAL LOAD
+================================================== */
+
+displayFiles(files);
+
+</script>
+
+</body>
+</html>   MAIN CONTAINER
+============================== */
+
+.container {
+    width: 100%;
+    max-width: 650px;
+    margin: auto;
+}
+
+
+/* ==============================
+   HEADER
+============================== */
+
+.header {
+    text-align: center;
+    padding: 15px 0 22px;
+}
+
+.logo {
+    font-size: 34px;
+    margin-bottom: 6px;
+}
+
+.header h1 {
+    font-size: 28px;
+    font-weight: 700;
+}
+
+.header p {
+    color: #888;
+    font-size: 13px;
+    margin-top: 6px;
+}
+
+
+/* ==============================
+   SEARCH
+============================== */
+
+.search-box {
+    position: relative;
+    margin-bottom: 18px;
+}
+
+.search-box span {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #777;
+    pointer-events: none;
+}
+
+#search {
+    width: 100%;
+    height: 48px;
+    padding: 0 15px 0 43px;
+
+    border: 1px solid #252525;
+    border-radius: 14px;
+
+    outline: none;
+
+    background: #111;
+    color: #fff;
+
+    font-size: 15px;
+}
+
+#search::placeholder {
+    color: #666;
+}
+
+#search:focus {
+    border-color: #555;
+}
+
+
+/* ==============================
+   FILE COUNT
+============================== */
+
+.file-count {
+    color: #777;
+    font-size: 12px;
+    margin: 0 3px 12px;
+}
+
+
+/* ==============================
+   FILE CARD
+============================== */
+
+.file-card {
+    background: #111;
+
+    border: 1px solid #222;
+    border-radius: 16px;
+
+    padding: 15px;
+
+    margin-bottom: 12px;
+
+    transition:
+        transform .18s ease,
+        border-color .18s ease,
+        background .18s ease;
+}
+
+.file-card:hover {
+    transform: translateY(-2px);
+    border-color: #3a3a3a;
+    background: #141414;
+}
+
+
+/* ==============================
+   CARD TOP
+============================== */
+
+.card-top {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+}
+
+
+/* ==============================
+   FILE ICON
+============================== */
+
+.file-icon {
+    width: 52px;
+    height: 52px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 13px;
+
+    background: #202020;
+
+    font-size: 24px;
+}
+
+
+/* ==============================
+   FILE INFORMATION
+============================== */
+
+.file-info {
+    min-width: 0;
+    flex: 1;
+}
+
+.file-name {
+    font-size: 16px;
+    font-weight: 700;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.file-meta {
+    display: flex;
+    flex-wrap: wrap;
+
+    gap: 6px;
+
+    margin-top: 7px;
+
+    color: #777;
+
+    font-size: 11px;
+}
+
+.badge {
+    background: #1e1e1e;
+    border-radius: 6px;
+    padding: 4px 7px;
+}
+
+
+/* ==============================
+   ACTION BUTTONS
+============================== */
+
+.actions {
+    display: flex;
+    gap: 8px;
+
+    margin-top: 14px;
+}
+
+.btn {
+    flex: 1;
+
+    min-height: 42px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 10px;
+
+    border: 1px solid #292929;
+
+    background: #1c1c1c;
+
+    color: #fff;
+
+    text-decoration: none;
+
+    font-size: 13px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: .15s ease;
+}
+
+.btn:hover {
+    background: #292929;
+}
+
+.btn:active {
+    transform: scale(.97);
+}
+
+
+/* Download */
+
+.download-btn {
+    background: #ffffff;
+    color: #000000;
+    border-color: #ffffff;
+}
+
+.download-btn:hover {
+    background: #dddddd;
+}
+
+
+/* ==============================
+   EMPTY STATE
+============================== */
+
+.empty {
+    display: none;
+
+    text-align: center;
+
+    padding: 45px 20px;
+
+    color: #666;
+}
+
+.empty-icon {
+    font-size: 35px;
+    margin-bottom: 10px;
+}
+
+
+/* ==============================
+   FOOTER
+============================== */
+
+footer {
+    text-align: center;
+
+    color: #555;
+
+    font-size: 12px;
+
+    padding: 20px 0 10px;
+}
+
+
+/* ==============================
+   MOBILE
+============================== */
+
+@media (max-width: 480px) {
+
+    body {
+        padding: 12px;
+    }
+
+    .logo {
+        font-size: 30px;
+    }
+
+    .header h1 {
+        font-size: 25px;
+    }
+
+    .file-card {
+        padding: 13px;
+    }
+
+    .file-icon {
+        width: 48px;
+        height: 48px;
+        font-size: 21px;
+    }
+
+    .file-name {
+        font-size: 15px;
+    }
+
+    .btn {
+        min-height: 40px;
+        font-size: 12px;
+    }
+}
+
+</style>
+</head>
+
+
+<body>
+
+<div class="container">
+
+
+    <!-- ==========================
+         HEADER
+    =========================== -->
+
+    <header class="header">
+
+        <div class="logo">
+            🎵
+        </div>
+
+        <h1>
+            Echo Music
+        </h1>
+
+        <p>
+            Music • Videos • Files
+        </p>
+
+    </header>
+
+
+    <!-- ==========================
+         SEARCH
+    =========================== -->
+
+    <div class="search-box">
+
+        <span>🔍</span>
+
+        <input
+            id="search"
+            type="search"
+            placeholder="Search files..."
+            autocomplete="off"
+        >
+
+    </div>
+
+
+    <!-- ==========================
+         FILE COUNT
+    =========================== -->
+
+    <div
+        class="file-count"
+        id="fileCount">
+        0 files
+    </div>
+
+
+    <!-- ==========================
+         FILE LIST
+    =========================== -->
+
+    <div id="fileList"></div>
+
+
+    <!-- ==========================
+         EMPTY
+    =========================== -->
+
+    <div
+        class="empty"
+        id="empty">
+
+        <div class="empty-icon">
+            🔎
+        </div>
+
+        <div>
+            No files found
+        </div>
+
+    </div>
+
+
+    <!-- ==========================
+         FOOTER
+    =========================== -->
+
+    <footer>
+        Made with ❤️
+    </footer>
+
+
+</div>
+
+
+<script>
+
+/* ==================================================
+   FILE DATABASE
+
+   Add new files here.
+
+   Example:
+
+   {
+       name: "My Song",
+       type: "Audio",
+       extension: "MP3",
+       size: "5 MB",
+       url: "https://example.com/song.mp3"
+   }
+
+================================================== */
+
+
+const files = [
+
+    {
+        name: "Town Bus Songs",
+        type: "Video",
+        extension: "MP4",
+        size: "Unknown",
+
+        url:
+        "https://decisive-julianna-movielinkszzz-16d24678.koyeb.app/7044/town_bus_songs_traveling_songs_Ilayaraja_songs_melody_songs_night.mp4?hash=AgADCy"
+    },
+
+
+    {
+        name: "Night Traveling Song",
+        type: "Video",
+        extension: "MP4",
+        size: "Unknown",
+
+        url:
+        "https://decisive-julianna-movielinkszzz-16d24678.koyeb.app/7046/Night_Traveling_Song_Love_Songs_Ilayaraja_Songs_Midnight_Melody.mp4?hash=AgADDC"
+    },
+
+
+    {
+        name: "Bus Travel Tamil Hits",
+        type: "Video",
+        extension: "MP4",
+        size: "Unknown",
+
+        url:
+        "https://decisive-julianna-movielinkszzz-16d24678.koyeb.app/7048/bus+travel+songs+tamil+Ilayaraja+Tamil+Hits+SPB+Tamil+Hits.mp4?hash=AgADDS"
+    },
+
+
+    {
+        name: "Echo 5.2.89 Universal",
+        type: "Application",
+        extension: "APK",
+        size: "Unknown",
+
+        url:
         "https://decisive-julianna-movielinkszzz-16d24678.koyeb.app/7132/Echo-5.2.89-Universal.apk?hash=AgADBy"
     }
 
